@@ -20,8 +20,8 @@ class WordsSqliteModel(object):
         self.__conn.close()
 
     def view_words(self):
-        viewSql = "select substr(add_time,0,14),count(1) from `" + self.__tableName + "` group by substr(add_time,0,14) limit 20";
-        # viewSql = "select * from `" + self.__tableName + "` where add_result=1 order by view_count desc limit 3000,20";
+        # viewSql = "select substr(add_time,0,14),count(1) from `" + self.__tableName + "` group by substr(add_time,0,14) limit 20";
+        viewSql = "select substr(add_time,0,14),count(1) from `" + self.__tableName + "` where add_result=0 group by substr(add_time,0,14) limit 20"
         # viewSql = "select add_result,count(1) from `" + self.__tableName + "` group by add_result limit 20"
         # viewSql = "select * from `" + self.__tableName + "` order by add_time desc limit 20";
         return self.__cursor.execute(viewSql).fetchall()

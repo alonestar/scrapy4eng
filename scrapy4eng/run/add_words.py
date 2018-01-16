@@ -6,7 +6,7 @@ from nltk.corpus import wordnet
 dictEngObj = DictEng()
 wordsObj = WordsSqliteModel()
 
-for wordInfo in wordsObj.view_not_report_words():
+for wordInfo in wordsObj.view_words():
     print wordInfo
 # print wordsObj.add_words_2_shanbay('apache')
 
