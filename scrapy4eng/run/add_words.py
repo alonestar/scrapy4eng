@@ -1,12 +1,15 @@
 from scrapy4eng.data.words_sqlite_model import WordsSqliteModel
+from scrapy4eng.data.dict_eng import DictEng
 # from ..data.words_sqlite_model import WordsSqliteModel
+from nltk.corpus import wordnet
 
-
+dictEngObj = DictEng()
 wordsObj = WordsSqliteModel()
-# for wordInfo in wordsObj.view_words():
+
+# for wordInfo in wordsObj.view_not_report_words():
 #     print wordInfo
 # print wordsObj.add_words_2_shanbay('apache')
-#
+
 # exit(-1)
 
 allWords = wordsObj.view_not_report_words();
@@ -17,13 +20,17 @@ for wordInfo in allWords:
     newWord = wordInfo[1]
     wordsResult = []
     index += 1;
+
+    if not dictEngObj.isEnglishWord(newWord):
+        wordsObj.report_words_success(newWord, 12)
+
     if index % 10 == 0 or index >= len(allWords):
         # print index
         postData = postData + '%0A' + newWord
         try:
             wordsResult = wordsObj.add_words_2_shanbay(postData)
         except:
-            print postData
+            # print postData
             postData = '';
             continue
         # except:

@@ -40,7 +40,8 @@ import nltk
 #vim ~/.profile
 #文件末尾添加NLTK_DATA="full/path"
 #source ~/.profile
-nltk.download(download_dir='/data/db/python/nltk')
+nltk.download('wordnet',download_dir='/data/db/python/nltk')
+# nltk.download(download_dir='/data/db/python/nltk')
 #在弹出GUI界面就可以选择下载的语料了
 
 # from nltk.book import *

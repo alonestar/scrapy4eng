@@ -8,11 +8,13 @@
 import sys
 import enchant
 from scrapy4eng.data.words_sqlite_model import WordsSqliteModel
+from scrapy4eng.data.dict_eng import DictEng
 reload(sys)
 
 class AlsScrapyShanbayPipeline(object):
     __dbModel = None
     __enchantObj = enchant.Dict("en_US")
+    __dictEngObj = DictEng()
 
     def open_spider(self, spider):
         self.__dbModel = WordsSqliteModel()
@@ -28,7 +30,7 @@ class AlsScrapyShanbayPipeline(object):
 
     def __checkAndAddWords(self, newWords):
         newWords = newWords.lower()
-        if newWords and self.__enchantObj.check(newWords):
+        if newWords and self.__enchantObj.check(newWords) and self.__dictEngObj.isEnglishWord(newWords):
             self.__dbModel.replace_words(newWords)
             return True
         else:
