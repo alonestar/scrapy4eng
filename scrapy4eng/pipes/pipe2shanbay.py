@@ -9,7 +9,6 @@ import sys
 import enchant
 from scrapy4eng.data.words_sqlite_model import WordsSqliteModel
 reload(sys)
-sys.setdefaultencoding( "utf-8" )
 
 class AlsScrapyShanbayPipeline(object):
     __dbModel = None

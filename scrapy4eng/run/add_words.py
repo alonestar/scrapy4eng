@@ -1,13 +1,12 @@
 from scrapy4eng.data.words_sqlite_model import WordsSqliteModel
 # from ..data.words_sqlite_model import WordsSqliteModel
 
+
 wordsObj = WordsSqliteModel()
-
-
-for wordInfo in wordsObj.view_words():
-    print wordInfo
-print wordsObj.add_words_2_shanbay('apache')
-
+# for wordInfo in wordsObj.view_words():
+#     print wordInfo
+# print wordsObj.add_words_2_shanbay('apache')
+#
 # exit(-1)
 
 allWords = wordsObj.view_not_report_words();
@@ -21,12 +20,18 @@ for wordInfo in allWords:
     if index % 10 == 0 or index >= len(allWords):
         # print index
         postData = postData + '%0A' + newWord
-        wordsResult = wordsObj.add_words_2_shanbay(postData)
+        try:
+            wordsResult = wordsObj.add_words_2_shanbay(postData)
+        except:
+            print postData
+            postData = '';
+            continue
         # except:
         #     print 'except'
         # time.sleep(60)
         # badWords += wordsObj.add_words_2_shanbay(newWord)
         if len(wordsResult) > 0:
+
             if len(wordsResult['notfound_words']) > 0:
                 for notfound_words in wordsResult['notfound_words']:
                     wordsObj.report_words_success(notfound_words.lower(), 11)
@@ -35,6 +40,7 @@ for wordInfo in allWords:
                 for learning_dicts in wordsResult['learning_dicts']:
                     wordsObj.report_words_success(learning_dicts['content'].lower(), 1)
                     # print 'found ' + learning_dicts['content'].lower()
+
         postData = '';
     else:
         postData = postData + '%0A' + newWord
