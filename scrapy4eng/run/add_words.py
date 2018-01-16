@@ -1,6 +1,5 @@
 from scrapy4eng.data.words_sqlite_model import WordsSqliteModel
-
-
+# from ..data.words_sqlite_model import WordsSqliteModel
 
 wordsObj = WordsSqliteModel()
 
