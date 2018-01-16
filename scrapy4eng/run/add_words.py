@@ -6,8 +6,8 @@ from nltk.corpus import wordnet
 dictEngObj = DictEng()
 wordsObj = WordsSqliteModel()
 
-# for wordInfo in wordsObj.view_not_report_words():
-#     print wordInfo
+for wordInfo in wordsObj.view_not_report_words():
+    print wordInfo
 # print wordsObj.add_words_2_shanbay('apache')
 
 # exit(-1)
@@ -21,8 +21,10 @@ for wordInfo in allWords:
     wordsResult = []
     index += 1;
 
+    print "1000|%d"%(index)
     if not dictEngObj.isEnglishWord(newWord):
         wordsObj.report_words_success(newWord, 12)
+        newWord = ''
 
     if index % 10 == 0 or index >= len(allWords):
         # print index
@@ -38,7 +40,8 @@ for wordInfo in allWords:
         # time.sleep(60)
         # badWords += wordsObj.add_words_2_shanbay(newWord)
         if len(wordsResult) > 0:
-
+            for updateWord in postData.split('%0A'):
+                wordsObj.report_words_success(updateWord.lower(), 1)
             if len(wordsResult['notfound_words']) > 0:
                 for notfound_words in wordsResult['notfound_words']:
                     wordsObj.report_words_success(notfound_words.lower(), 11)

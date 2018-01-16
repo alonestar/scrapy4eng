@@ -11,9 +11,11 @@ class ApacheSpider(scrapy.Spider):
     name = 'apache'
     allowed_domains = ['www.apache.com', 'blogs.apache.org']
     start_urls = ['http://www.apache.com', 'http://blogs.apache.org']
+    __scanNum = 1
+    __maxScanNum = 10000
 
     def parse(self, response):
-        self.__log('parse|' + response.url)
+        self.__log("[parse] %d|%d|%s" % (self.__maxScanNum, self.__scanNum, response.url))
         soup = BeautifulSoup(response.body, "lxml")
 
         item = ArticleItem()
@@ -28,7 +30,9 @@ class ApacheSpider(scrapy.Spider):
         for a in soup.find_all('a'):
             if 'href' in a.attrs:
                 urlTmp = urlparse.urljoin(response.url, a.attrs['href'].strip())
-                yield scrapy.http.Request(urlTmp)
+                if self.__scanNum <= self.__maxScanNum:
+                    yield scrapy.http.Request(urlTmp)
+                    self.__scanNum += 1
 
     def __log(self, logStr):
         logPre = "[" + time.strftime('%Y-%m-%d %H:%M:%S',time.localtime(time.time())) + "] "

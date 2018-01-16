@@ -11,7 +11,7 @@ class WordsSqliteModel(object):
     __cursor = None
 
     def __init__(self):
-        print self.__sqliteDbDir
+        # print self.__sqliteDbDir
         self.__conn = sqlite3.connect(self.__sqliteDbDir)
         self.__cursor = self.__conn.cursor()
 
@@ -20,12 +20,14 @@ class WordsSqliteModel(object):
         self.__conn.close()
 
     def view_words(self):
-        viewSql = "select add_result,count(1) from `" + self.__tableName + "` group by add_result limit 20";
-        viewSql = "select * from `" + self.__tableName + "` where add_result=12 limit 20";
+        viewSql = "select substr(add_time,0,14),count(1) from `" + self.__tableName + "` group by substr(add_time,0,14) limit 20";
+        # viewSql = "select * from `" + self.__tableName + "` where add_result=1 order by view_count desc limit 3000,20";
+        # viewSql = "select add_result,count(1) from `" + self.__tableName + "` group by add_result limit 20"
+        # viewSql = "select * from `" + self.__tableName + "` order by add_time desc limit 20";
         return self.__cursor.execute(viewSql).fetchall()
 
     def view_not_report_words(self):
-        viewSql = "select * from `" + self.__tableName + "` where add_result=0 limit 200";
+        viewSql = "select * from `" + self.__tableName + "` where add_result=0 order by view_count desc limit 1000";
         return self.__cursor.execute(viewSql).fetchall()
 
     def report_words_success(self, words, result):
